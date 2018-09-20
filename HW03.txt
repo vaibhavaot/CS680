@@ -1,0 +1,154 @@
+//pseudo code for Mario game
+
+Interface MarioState:
+	move(Mario player);
+	duck(Mario player);
+	stand(Mario player);
+	jump(Mario player);
+	// interface to keep track of the player state
+--------------------------------------------------------------------
+Class Mario:
+	MarioState state = null;
+	Key key = null;
+	dKeyPushed():
+		state.duck();
+
+	dKeyReleased():
+		state.stand();
+
+	sKeyPushed():
+		state.jump();
+
+	setState(MarioState state)
+		this.state = state;
+		// change the state to state object pass in argument
+	fuction move()
+		state.move(this)
+	function duck()
+		state.duck(this)
+	function stand()
+		state.stand(this)
+	function jump()
+		state.jump(this)
+
+
+--------------------------------------------------------------------------
+Class Standing:
+	function move(Mario player):
+		// if r pressed player will move right
+		if player.key == "r"
+			move right;
+
+		// if l pressed player will move left
+		if player.key == "l"
+			move left;
+		if player.key == a && (player.key == l || player.key == r)
+			move fast in the direct of l if l is pressed
+			move fast in the direction of r if r is pressed.
+
+	function duck(Mario player):
+		...make player duck
+		...implementation to made mario player duck
+		// and then changing state from stand to duck
+		player.setState(new Ducking());
+ 		// now Mario player is shifted from Standing state to ducking state
+		
+	function stand(Mario player):
+		//do nothing as player is already in
+		// stand state
+
+	function jump(Mario player):
+		....implement game logic to made mario player jump
+		// change the state from standing to jump
+		player.setState(new Jumping());
+		// now Mario player is shifted from Standing state to Jumping state
+
+
+------------------------------------------------------------
+
+Class Ducking:
+	function move(Mario player):
+		// if r pressed player will move right
+		if player.key == "r"
+			move right;
+
+		// if l pressed player will move left
+		if player.key == "l"
+			move left;
+		if player.key == a && (player.key == l || player.key == r)
+			move fast in the direct of l if l is pressed
+			move fast in the direction of r if r is pressed.
+
+	function duck(Mario player):
+		//do nothing as player is already in
+		// Ducking state
+
+		
+	function stand(Mario player):
+		..implementation to make mario player Stand
+		player.setState(new Standing());
+ 		// now Mario player is shifted from Ducking state to Standing state
+
+	function jump(Mario player):
+		.. implement game logic to made mario player jump
+		// change the state from standing to jump
+		player.setState(new Jumping());
+		// now Mario player is shifted from Standing state to Jumping state
+---------------------------------------------------------------------------
+
+Class Jump
+	function move(Mario player):
+		// if r pressed player will move right
+		if player.key == "r"
+			move right;
+
+		// if l pressed player will move left
+		if player.key == "l"
+			move left;
+		if player.key == a && (player.key == l || player.key == r)
+			move fast in the direct of left if l is pressed
+			move fast in the direction of right r if r is pressed.
+
+	function duck(Mario player):
+		// cannot duck as the player is in jumping state
+		.. implement a logic that checks if the Jumping state exceeds 7 seconds or not
+		// if it's less 7 seconds do nothing
+		// else if 7 seconds is exceed and the player is pressing ducking state then change it to stand
+		...Jumping.timer is calculate how many seconds has passed from the time method was called and it's incrementing its value by 1
+		While(Jumping.timer < 7)
+		{
+			Jumping.timer++;
+		}
+		// after 7 seconds has passed, does not matter if they S key is pressed or released the state should be changed to Standing.
+		state.changeState(new Standing()); 
+
+		
+	function stand(Mario player):
+		player.setState(new Standing());
+
+	function jump(Mario player):
+		// do nothing 
+		// air jumping is not allowed
+		// but the jump is only allowed for 7 seconds so till 7 seconds do nothing after that change the state to Standing
+		While(Jumping.timer < 7)
+		{
+			Jumping.timer++;
+		}
+		player.setState(new Standing());
+		
+
+
+
+Game Loop:
+	Mario Mplayer = new Mario();
+	Mplayer.setState(new Standing()) // when the game is start mario player should be in standing position.
+	InputHandler ih = new InputHandler();
+	while(true)
+	{
+			... Game logic
+			... if the D key is pushed Mplayer.dKeyPushed is called 
+			... if the D key is released after being pushed Mplayer.dKeyReleased is called
+			... if the S key is pushed Mplayer.sKeyPushed is called
+			... if the first key pushed is L,R or combination of (L and A) and (R and A) then as the state is standing when the game is start so Standing.move() will get called.
+				
+	}
